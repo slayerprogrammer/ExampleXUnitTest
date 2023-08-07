@@ -13,7 +13,7 @@ namespace ExampleUnitTest.Test
         public Calculator calculator { get; set; }
         public CalculatorTest()
         {
-            this.calculator = new Calculator();
+            this.calculator = null;
         }
 
 
