@@ -33,6 +33,11 @@ namespace ExampleUnitTest.Test
 
             var actualTotal = calculator.add(a, b);
             Assert.Equal(expectedTotal, actualTotal);
+
+            //Times.one 1 kere çalışmış olsun diyoruz
+            //times.never hiç çalışmazsa demek
+            //times atleast kaç kere çağrıldığını sorar
+            calculatorMock.Verify(x => x.add(a, b), Times.AtLeast(1));
         }
 
         [Theory]
@@ -42,6 +47,22 @@ namespace ExampleUnitTest.Test
         {
             var actualTotal = calculator.add(a, b);
             Assert.Equal(expectedTotal, actualTotal);
+        }
+
+
+        [Theory]
+        [InlineData(2, 6, 8)]
+        public void Add_CustomValues_ReturnTotalValue(int a, int b, int expectedTotal)
+        {
+            int actualTotal = 0;
+            calculatorMock.Setup(x => x.add(It.IsAny<int>(), It.IsAny<int>())).Callback<int,int>((x,y) => actualTotal = x + y);
+
+            calculator.add(a, b);
+            Assert.Equal(expectedTotal, actualTotal);
+
+            calculator.add(5, 20);
+            Assert.Equal(25, actualTotal);
+
         }
 
     }
